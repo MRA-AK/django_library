@@ -37,7 +37,7 @@ class Category(CommonInfo):
 class Book(CommonInfo):
     name = models.CharField(max_length=255)
     authors = models.ManyToManyField(Author)
-    publisher = models.ForeignKey(Publisher)
+    publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT)
     categories = models.ManyToManyField(Category)
 
     def __str__(self):
