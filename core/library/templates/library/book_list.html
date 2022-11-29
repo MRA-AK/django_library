@@ -1,0 +1,3 @@
+{% for book in books %}
+    {{ book.name }} - {% for author in book.authors.all %} {{ author.full_name }} {% endfor %}
+{% endfor %}
