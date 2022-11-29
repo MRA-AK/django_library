@@ -1,10 +1,11 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.timezone import now
 
 
 class CommonInfo(models.Model):
     """Abstract base class for models common info"""
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -14,6 +15,7 @@ class CommonInfo(models.Model):
 
 class Author(CommonInfo):
     """Books author"""
+
     full_name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -22,13 +24,16 @@ class Author(CommonInfo):
 
 class Publisher(CommonInfo):
     """Books publisher"""
+
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
+
 class Category(CommonInfo):
     """Books category"""
+
     name = models.CharField(max_length=255)
 
     class Meta:
@@ -36,6 +41,7 @@ class Category(CommonInfo):
 
     def __str__(self):
         return self.name
+
 
 class Book(CommonInfo):
     name = models.CharField(max_length=255)
