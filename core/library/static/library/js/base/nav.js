@@ -12,7 +12,7 @@
  *
  **/
 
-class Nav {
+ class Nav {
   // Default options
   get options() {
     return {
@@ -477,10 +477,14 @@ class Nav {
           .toLowerCase()
           .replace(/^\/+/g, '')
           .replace(/\.[^/.]+$/, '');
-      if (urlWithoutBackslash.includes(href) || urlWithoutBackslash.includes(hrefData)) {
+      if (urlWithoutBackslash == href) {
         el.classList.add('active');
         active = el;
       }
+      // if (urlWithoutBackslash.includes(href) || urlWithoutBackslash.includes(hrefData)) {
+      //   el.classList.add('active');
+      //   active = el;
+      // }
     });
 
     if (!active) {
@@ -727,11 +731,13 @@ class Nav {
       return;
     }
     this.pinButton && this.pinButton.classList.remove('disabled');
+    this.pinButton && this.pinButton.classList.remove('d-none');
   }
 
   // Disables pin button. It is disabled for the vertical menu when the screen size is smaller but not mobile.
   _disablePinButton() {
     this.pinButton && this.pinButton.classList.add('disabled');
+    this.pinButton && this.pinButton.classList.add('d-none');
   }
 
   // Resize handler
