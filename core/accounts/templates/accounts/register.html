@@ -1,23 +1,102 @@
-{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html dir="ltr" lang="fa">
 
-{% block title %}Library|Register{% endblock title %}
+<head>
+    <link rel="icon" type="image/png" href="{% static 'account/logo.png' %}">
 
-{% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Register</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Library|Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'account/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'account/css/sb-admin-2.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block">
+                        <div class="pt-5">
+                            <img width="400" src="{% static 'account/gif/register.gif' %}"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 pt-2 d-block d-lg-none text-center">
+                        <img width="140" src="{% static 'account/gif/register.gif' %}"/>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="pt-lg-5 pb-5 pl-5 pr-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Register Account</h1>
+                            </div>
+                            <form class="user" method="POST">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="form-group">
+                                    <input type="text" maxlength="150" autofocus required class="form-control form-control-user" id="id_username" name="username"
+                                        placeholder="Username">
+                                    <small style="color: red;">
+                                        {{ form.username.errors }}
+                                    </small>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" required class="form-control form-control-user" name="password1"
+                                            id="id_password1" placeholder="Password">
+                                        <small style="color: red;">
+                                            {{ form.password1.errors }}
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" required class="form-control form-control-user" name="password2"
+                                            id="id_password2" placeholder="Password confirmation">
+                                        <small style="color: red;">
+                                            {{ form.password2.errors }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <button href="login.html" class="btn btn-primary btn-user btn-block" type="submits">
+                                    Register
+                                </button>
+                                <hr>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                Already Have An Account? <a class="ml-1" href="{% url 'accounts:login' %}">Sign In</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="{% url 'accounts:login' %}">Sign In</a>
-            </small>
         </div>
+
     </div>
-{% endblock content %}
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'account/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'account/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'account/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'account/js/sb-admin-2.js' %}"></script>
+
+</body>
+
+</html>

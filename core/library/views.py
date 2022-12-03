@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 
-from .models import Book, Borrow, Category
+from .models import Author, Book, Borrow, Category, Publisher
 
 
 class BookListView(LoginRequiredMixin, ListView):
@@ -13,6 +13,13 @@ class BookListView(LoginRequiredMixin, ListView):
     model = Book
     context_object_name = "books"
     template_name = "library/book_list.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookListView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
 
 
 class MyBookListView(LoginRequiredMixin, ListView):
