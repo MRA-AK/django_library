@@ -2,6 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+
 from decouple import config
 
 settings_file = config("SETTINGS_FILE", default="development")
