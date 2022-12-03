@@ -45,6 +45,7 @@ class Category(CommonInfo):
 
 class Book(CommonInfo):
     name = models.CharField(max_length=255)
+    image = models.ImageField(default="default.jpg", upload_to="book_images")
     authors = models.ManyToManyField(Author)
     publisher = models.ForeignKey(Publisher, on_delete=models.RESTRICT)
     categories = models.ManyToManyField(Category)
@@ -55,7 +56,7 @@ class Book(CommonInfo):
 
 class Borrow(CommonInfo):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="borrowed")
     start_at = models.DateTimeField(default=now)
     end_at = models.DateTimeField()
 

@@ -1,3 +1,136 @@
-{% for book in books %}
-    {{ book.name }} - {% for author in book.authors.all %} {{ author.full_name }} {% endfor %}
-{% endfor %}
+{% extends 'library/base.html' %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+{% load static %}
+
+{% block title %}
+    <!-- Title and Top Buttons Start -->
+    <div class="page-title-container">
+      <div class="row g-0">
+        <div class="col-auto mb-2 mb-md-0 me-auto">
+          <div class="w-auto sw-md-30">
+            <h1 class="mb-0 pb-0 display-4" id="title">List of Books</h1>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 d-flex align-items-start justify-content-end justify-content-lg-start">
+          <div class="me-lg-auto w-100 search-input-container border border-separator">
+            <input class="form-control search" type="text" autocomplete="off" placeholder="Search" id="taskSearch" />
+            <span class="search-magnifier-icon">
+              <i data-acorn-icon="search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Title and Top Buttons End -->
+{% endblock title %}
+
+{% block content %}
+  <div class="row">
+    <!-- Left Side Start -->
+    <div class="col-12 col-lg-4 col-xl-3 d-none d-lg-block">
+      <div class="card mb-5">
+        <div class="card-body mb-n5" id="filterColumn">
+          <!-- Content of this will be moved from #filterMoveContent div based on the responsive breakpoint.  -->
+        </div>
+      </div>
+    </div>
+    <!-- Left Side End -->
+
+    <!-- Right Side Start -->
+    <div class="col-12 col-lg-8 col-xl-9">
+      <!-- Product Thumbnails Start -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-2 row-cols-xl-3 g-2 mb-5" id="productsCheckAll">
+        {% for book in books %}
+        <div class="col">
+          <div class="card h-100">
+            <a href="#">
+              <img src="{{ book.image.url }}" class="card-img-top sh-22" alt="card image" />
+            </a>
+            <div class="card-body pb-2">
+              <h3 class="mb-0 d-flex justify-content-center">
+                <a href="#" class="body-link lh-1-5 clamp-line" data-line="2">{{ book.name }}</a>
+              </h3>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+              {% if book|is_borrowed %}
+              <button type="button" class="btn btn-light btn-lg btn-block">Borrowed</button>
+              {% else %}
+              <button type="button" class="btn btn-info btn-lg btn-block">Available</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Product Thumbnails End -->
+
+    </div>
+    <!-- Right Side End -->
+  </div>
+{% endblock content %}
+
+{% block filter %}
+  <div class="modal modal-left fade" id="filterModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Filters</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Content of below will be moved to #filterColumn or back in here based on the data-move-breakpoint attribute below -->
+          <!-- Content will be here if the screen size is smaller than lg -->
+          <div id="filterMoveContent" data-move-target="#filterColumn" data-move-breakpoint="lg">
+            <div class="mb-5">
+              <p class="text-small text-muted mb-2">SEARCH</p>
+              <div class="row g-1">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Keyword" />
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-icon btn-icon-only btn-outline-primary" type="button">
+                    <i data-acorn-icon="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <p class="text-small text-muted mb-2">CATEGORY</p>
+              {% for category in categories %}
+              <div class="form-check">
+                <li class="form-check-label"><a href="{% url 'library:category_filter' cat_name=category.name %}">{{ category|title }}</a></li>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="mb-5">
+              <p class="text-small text-muted mb-2">AUTHOR</p>
+              {% for author in authors %}
+              <div class="form-check">
+                <li class="form-check-label"><a href="{% url 'library:author_filter' author_name=author.full_name %}">{{ author|title }}</a></li>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="mb-5">
+              <p class="text-small text-muted mb-2">PUBLISHER</p>
+              {% for publisher in publishers %}
+              <div class="form-check">
+                <li class="form-check-label"><a href="{% url 'library:publisher_filter' pub_name=publisher.name %}">{{ publisher|title }}</a></li>
+              </div>
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock filter %}
+
+{% block script %}
+  <script src="{% static 'library/js/cs/checkall.js' %}"></script>
+  <script src="{% static 'library/js/pages/storefront.filters.js' %}"></script>
+{% endblock script %}
