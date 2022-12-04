@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (BookFilterAuthorView, BookFilterCateforyView,
                     BookFilterNameView, BookFilterPublisherView, BookListView,
-                    MyBookListView)
+                    BookSearchView, MyBookListView)
 
 app_name = "library"
 
@@ -25,4 +25,5 @@ urlpatterns = [
         BookFilterPublisherView.as_view(),
         name="publisher_filter",
     ),
+    path("search/<str:keyword>/", BookSearchView.as_view(), name="search"),
 ]

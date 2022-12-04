@@ -14,9 +14,9 @@
         </div>
         <div class="col-12 col-md-6 d-flex align-items-start justify-content-end justify-content-lg-start">
           <div class="me-lg-auto w-100 search-input-container border border-separator">
-            <input class="form-control search" type="text" autocomplete="off" placeholder="Search" id="taskSearch" />
-            <span class="search-magnifier-icon">
-              <i data-acorn-icon="search"></i>
+            <input class="form-control search" type="text" autocomplete="off" placeholder="Search" id="searchTxt" />
+            <span id="searchBtn" class="search-magnifier-icon">
+              <button data-acorn-icon="search"></button>
             </span>
           </div>
         </div>
@@ -82,19 +82,6 @@
           <!-- Content of below will be moved to #filterColumn or back in here based on the data-move-breakpoint attribute below -->
           <!-- Content will be here if the screen size is smaller than lg -->
           <div id="filterMoveContent" data-move-target="#filterColumn" data-move-breakpoint="lg">
-            <div class="mb-5">
-              <p class="text-small text-muted mb-2">SEARCH</p>
-              <div class="row g-1">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Keyword" />
-                </div>
-                <div class="col-auto">
-                  <button class="btn btn-icon btn-icon-only btn-outline-primary" type="button">
-                    <i data-acorn-icon="chevron-right"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
 
             <div class="mb-5">
               <p class="text-small text-muted mb-2">CATEGORY</p>
@@ -133,4 +120,17 @@
 {% block script %}
   <script src="{% static 'library/js/cs/checkall.js' %}"></script>
   <script src="{% static 'library/js/pages/storefront.filters.js' %}"></script>
+  <script>
+    const element = document.getElementById("searchBtn");
+    element.addEventListener("click", myFunction);
+    
+    function myFunction() {
+      var text = document.getElementById("searchTxt").value;
+      if (text !== "") {
+        var url = "{% url 'library:search' keyword='url_arg' %}"
+        var new_url = url.replace('url_arg', text);
+        location.href = new_url;
+      }
+    }
+  </script>
 {% endblock script %}

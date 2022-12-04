@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 
@@ -47,6 +48,13 @@ class BookFilterNameView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Book.objects.filter(name__icontains=self.kwargs["name"]).distinct()
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookFilterNameView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
+
 
 class BookFilterCateforyView(LoginRequiredMixin, ListView):
     """
@@ -60,6 +68,13 @@ class BookFilterCateforyView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         category = get_object_or_404(Category, name=self.kwargs["cat_name"])
         return Book.objects.filter(categories=category)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookFilterCateforyView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
 
 
 class BookFilterAuthorView(LoginRequiredMixin, ListView):
@@ -76,6 +91,13 @@ class BookFilterAuthorView(LoginRequiredMixin, ListView):
             authors__full_name__icontains=self.kwargs["author_name"]
         ).distinct()
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookFilterAuthorView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
+
 
 class BookFilterPublisherView(LoginRequiredMixin, ListView):
     """
@@ -90,3 +112,37 @@ class BookFilterPublisherView(LoginRequiredMixin, ListView):
         return Book.objects.filter(
             publisher__name__icontains=self.kwargs["pub_name"]
         ).distinct()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookFilterPublisherView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
+
+
+class BookSearchView(LoginRequiredMixin, ListView):
+    """
+    A class based view to searching on the books.
+    """
+
+    model = Book
+    context_object_name = "books"
+    template_name = "library/book_list.html"
+
+    def get_queryset(self):
+        keyword = self.kwargs["keyword"]
+        result = Book.objects.filter(
+            Q(name__icontains=keyword)
+            | Q(publisher__name__icontains=keyword)
+            | Q(authors__full_name__icontains=keyword)
+            | Q(categories__name__icontains=keyword)
+        )
+        return result.distinct()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(BookSearchView, self).get_context_data(*args, **kwargs)
+        context["categories"] = Category.objects.all()
+        context["authors"] = Author.objects.all()
+        context["publishers"] = Publisher.objects.all()
+        return context
